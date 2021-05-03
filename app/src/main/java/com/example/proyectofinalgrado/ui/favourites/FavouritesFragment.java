@@ -16,15 +16,15 @@ import com.example.proyectofinalgrado.R;
 
 public class FavouritesFragment extends Fragment {
 
-    private FavouritesViewModel slideshowViewModel;
+    private FavouritesViewModel favouritesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
+        favouritesViewModel =
                 ViewModelProviders.of(this).get(FavouritesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_favourites, container, false);
         final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        favouritesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
