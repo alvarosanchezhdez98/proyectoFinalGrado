@@ -22,14 +22,9 @@ public class ContactFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         contactViewModel =
                 ViewModelProviders.of(this).get(ContactViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_favourites, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        contactViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_contact, container, false);
+        final TextView textView = root.findViewById(R.id.textViewUserFullName);
+
         return root;
     }
 }

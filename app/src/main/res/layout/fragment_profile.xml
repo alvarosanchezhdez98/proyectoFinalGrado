@@ -7,13 +7,35 @@
     android:orientation="vertical"
     tools:context=".ui.profile.ProfileFragment">
 
+    <ImageView
+        android:id="@+id/imageViewUserProfilePic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/imageViewUserProfilePic"
+        tools:src="@tools:sample/avatars" />
+
     <TextView
-        android:id="@+id/text_slideshow"
+        android:id="@+id/textViewUserFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:text="@string/textViewUserFullName"
         android:textAlignment="center"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/textViewUserBiography"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8" />
+
+    <TextView
+        android:id="@+id/textViewUserFavouritePlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 </LinearLayout>

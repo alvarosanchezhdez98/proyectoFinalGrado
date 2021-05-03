@@ -8,12 +8,56 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <TextView
-        android:id="@+id/text_slideshow"
+        android:id="@+id/textViewUserFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:text="@string/textViewFullName"
         android:textAlignment="center"
         android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonFullName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:autofillHints="@string/editTextEmailAddress"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/textViewEmail" />
+
+    <EditText
+        android:id="@+id/editTextEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:autofillHints="@string/editTextDescripcion"
+        android:ems="10"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="12"
+        android:autofillHints="@string/editTextDescripcion"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/buttonSubmit" />
+
 </LinearLayout>

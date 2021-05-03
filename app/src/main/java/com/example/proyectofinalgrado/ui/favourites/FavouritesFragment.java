@@ -23,13 +23,7 @@ public class FavouritesFragment extends Fragment {
         favouritesViewModel =
                 ViewModelProviders.of(this).get(FavouritesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_favourites, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        favouritesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        final TextView textView = root.findViewById(R.id.textViewPlaceDescription2);
         return root;
     }
 }
