@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "7855990843",
+    "project_id": "red-social-ca4b2",
+    "storage_bucket": "red-social-ca4b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7855990843:android:e7f3e66de14bfe832e541e",
+        "android_client_info": {
+          "package_name": "com.example.proyectofinalgrado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7855990843-0tce2n8dr5gqi3jctg6lo9bk9j1ehmv2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHSoycWZ8e3y4IwrZ-M_PU98kQ7Guaq9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7855990843-0tce2n8dr5gqi3jctg6lo9bk9j1ehmv2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
