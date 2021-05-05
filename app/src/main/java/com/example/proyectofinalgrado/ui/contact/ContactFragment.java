@@ -23,7 +23,7 @@ public class ContactFragment extends Fragment {
         contactViewModel =
                 ViewModelProviders.of(this).get(ContactViewModel.class);
         View root = inflater.inflate(R.layout.fragment_contact, container, false);
-        final TextView textView = root.findViewById(R.id.textViewUserFullName);
+
 
         return root;
     }
