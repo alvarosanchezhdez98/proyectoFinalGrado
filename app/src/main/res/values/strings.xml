@@ -26,4 +26,5 @@
     <string name="textViewUserName">Username:</string>
     <string name="textViewUserPassword">Password</string>
     <string name="buttonRegister">Register</string>
+    <string name="buttonCancel">Cancel</string>
 </resources>
