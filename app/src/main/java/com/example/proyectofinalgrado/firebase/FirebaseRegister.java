@@ -59,6 +59,8 @@ public class FirebaseRegister extends AppCompatActivity implements View.OnClickL
                     }
                 }
             });
+
+
         }else{
             Toast.makeText(this,"Some field is empty",Toast.LENGTH_LONG).show();
         }
