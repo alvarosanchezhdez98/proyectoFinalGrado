@@ -22,4 +22,8 @@
     <string name="imageViewUserProfilePic">User Profile Pic</string>
     <string name="textViewUserBiography">Place User Biography</string>
     <string name="buttonEditProfile">Edit Profile</string>
+    <string name="textViewUserEmail">Email:</string>
+    <string name="textViewUserName">Username:</string>
+    <string name="textViewUserPassword">Password</string>
+    <string name="buttonRegister">Register</string>
 </resources>
