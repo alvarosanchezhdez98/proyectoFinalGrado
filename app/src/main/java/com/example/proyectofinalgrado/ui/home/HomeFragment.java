@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.proyectofinalgrado.MainActivity;
 import com.example.proyectofinalgrado.R;
+import com.example.proyectofinalgrado.firebase.FirebaseLogin;
 import com.example.proyectofinalgrado.firebase.FirebaseRegister;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), FirebaseRegister.class);
+        Intent intent = new Intent(getActivity(), FirebaseLogin.class);
         startActivity(intent);
     }
 }

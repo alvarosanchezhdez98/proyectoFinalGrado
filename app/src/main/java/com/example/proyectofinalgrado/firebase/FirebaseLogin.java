@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class FireBaseLogin extends AppCompatActivity implements View.OnClickListener {
+public class FirebaseLogin extends AppCompatActivity implements View.OnClickListener {
 
     EditText editTextLoginEmail;
     EditText editTextLoginPassword;
@@ -68,10 +68,10 @@ public class FireBaseLogin extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(FireBaseLogin.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FirebaseLogin.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
                         //Make intent to Main Activity.
                     }else{
-                        Toast.makeText(FireBaseLogin.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FirebaseLogin.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

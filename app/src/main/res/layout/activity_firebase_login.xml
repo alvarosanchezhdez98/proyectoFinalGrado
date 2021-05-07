@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".firebase.FireBaseLogin">
+    tools:context=".firebase.FirebaseLogin">
 
     <TextView
         android:id="@+id/textViewLoginEmail"
@@ -64,6 +64,8 @@
         android:layout_height="wrap_content"
         android:text="@string/textViewNotRegistered"
         android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
