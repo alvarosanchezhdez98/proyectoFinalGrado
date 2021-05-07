@@ -31,20 +31,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Button buttonEditProfile;
     Button buttonCancel;
 
+    private String fullName;
+    private String biography;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         profileViewModel =
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        imageViewUserProfilePic = getActivity().findViewById(R.id.imageViewUserProfilePic);
-        imageButtonUserProfilePic = getActivity().findViewById(R.id.imageButtonUserProfilePic);
-        textViewUserFullName = getActivity().findViewById(R.id.textViewUserFullName);
-        editTextUserFullName = getActivity().findViewById(R.id.editTextUserFullName);
-        textViewUserBiography = getActivity().findViewById(R.id.textViewUserBiography);
-        editTextUserBiography = getActivity().findViewById(R.id.editTextUserBiography);
-        buttonEditProfile = getActivity().findViewById(R.id.buttonEditProfile);
-        buttonCancel = getActivity().findViewById(R.id.buttonCancel);
+        imageViewUserProfilePic = root.findViewById(R.id.imageViewUserProfilePic);
+        imageButtonUserProfilePic = root.findViewById(R.id.imageButtonUserProfilePic);
+        textViewUserFullName = root.findViewById(R.id.textViewUserFullName);
+        editTextUserFullName = root.findViewById(R.id.editTextUserFullName);
+        textViewUserBiography = root.findViewById(R.id.textViewUserBiography);
+        editTextUserBiography = root.findViewById(R.id.editTextUserBiography);
+        buttonEditProfile = root.findViewById(R.id.buttonEditProfile);
+        buttonCancel = root.findViewById(R.id.buttonCancel);
 
         buttonEditProfile.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
@@ -55,15 +58,104 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
     public void onClick(View v) {
         int button = v.getId();
         switch (button){
             case R.id.buttonEditProfile:
+                editProfile();
                 break;
             case R.id.buttonCancel:
+                cancelChanges();
                 break;
             case R.id.imageButtonUserProfilePic:
+                changeProfilePic();
                 break;
+        }
+    }
+
+    private void changeProfilePic() {
+
+    }
+
+    private void cancelChanges() {
+        textViewUserFullName.setText(fullName);
+        textViewUserBiography.setText(biography);
+        buttonEditProfile.setText("Edit Profile");
+
+        //Clear Edit Components
+        imageButtonUserProfilePic.setVisibility(View.GONE);
+        editTextUserFullName.setVisibility(View.GONE);
+        editTextUserBiography.setVisibility(View.GONE);
+        buttonCancel.setVisibility(View.GONE);
+
+        imageButtonUserProfilePic.setClickable(false);
+        editTextUserFullName.setClickable(false);
+        editTextUserBiography.setClickable(false);
+        buttonCancel.setClickable(false);
+
+        imageViewUserProfilePic.setVisibility(View.VISIBLE);
+        textViewUserFullName.setVisibility(View.VISIBLE);
+        textViewUserBiography.setVisibility(View.VISIBLE);
+    }
+
+    private void editProfile() {
+        if(buttonEditProfile.getText().toString().equals("Edit Profile")){
+            //Initialize variables with data
+            fullName = textViewUserFullName.getText().toString();
+            biography = textViewUserBiography.getText().toString();
+
+            //Settings editText with designed options.
+            buttonEditProfile.setText("Save");
+            imageButtonUserProfilePic.setImageDrawable(imageViewUserProfilePic.getDrawable());
+            editTextUserFullName.setText(fullName);
+            editTextUserBiography.setText(biography);
+
+            //Clear original components
+            imageViewUserProfilePic.setVisibility(View.GONE);
+            textViewUserFullName.setVisibility(View.GONE);
+            textViewUserBiography.setVisibility(View.GONE);
+
+            //Make visible and clickable edit components
+            imageButtonUserProfilePic.setVisibility(View.VISIBLE);
+            editTextUserFullName.setVisibility(View.VISIBLE);
+            editTextUserBiography.setVisibility(View.VISIBLE);
+            buttonCancel.setVisibility(View.VISIBLE);
+
+            imageButtonUserProfilePic.setClickable(true);
+            editTextUserFullName.setClickable(true);
+            editTextUserBiography.setClickable(true);
+            buttonCancel.setClickable(true);
+        }else if(buttonEditProfile.getText().toString().equals("Save")){
+            fullName = editTextUserFullName.getText().toString();
+            biography = editTextUserBiography.getText().toString();
+            if(!fullName.isEmpty() && !biography.isEmpty()){
+                imageViewUserProfilePic.setImageDrawable(imageButtonUserProfilePic.getDrawable());
+                textViewUserFullName.setText(fullName);
+                textViewUserBiography.setText(biography);
+                buttonEditProfile.setText("Edit Profile");
+
+                //Make Invisible and non clickable edit components
+                imageButtonUserProfilePic.setVisibility(View.GONE);
+                editTextUserFullName.setVisibility(View.GONE);
+                editTextUserBiography.setVisibility(View.GONE);
+                buttonCancel.setVisibility(View.GONE);
+
+                imageButtonUserProfilePic.setClickable(false);
+                editTextUserFullName.setClickable(false);
+                editTextUserBiography.setClickable(false);
+                buttonCancel.setClickable(false);
+
+                //Make text and image components visible again.
+                imageViewUserProfilePic.setVisibility(View.VISIBLE);
+                textViewUserFullName.setVisibility(View.VISIBLE);
+                textViewUserBiography.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

@@ -24,7 +24,9 @@
     <string name="buttonEditProfile">Edit Profile</string>
     <string name="textViewUserEmail">Email:</string>
     <string name="textViewUserName">Username:</string>
-    <string name="textViewUserPassword">Password</string>
+    <string name="textViewUserPassword">Password:</string>
     <string name="buttonRegister">Register</string>
     <string name="buttonCancel">Cancel</string>
+    <string name="buttonLogin">Login</string>
+    <string name="textViewNotRegistered">Not registered yet? Create an account</string>
 </resources>
