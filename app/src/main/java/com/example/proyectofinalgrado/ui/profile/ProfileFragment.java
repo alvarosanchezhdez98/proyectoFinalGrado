@@ -1,6 +1,9 @@
 package com.example.proyectofinalgrado.ui.profile;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private ProfileViewModel profileViewModel;
 
+    //For take photo from gallery
+    Uri imageUri;
+    private static final int PICK_IMAGE = 100;
+    private static final int RESULT_OK=1;
+
+    //Components
     ImageView imageViewUserProfilePic;
     ImageButton imageButtonUserProfilePic;
     TextView textViewUserFullName;
@@ -30,6 +39,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Button buttonEditProfile;
     Button buttonCancel;
 
+    //User data.
     private String fullName;
     private String biography;
 
@@ -82,8 +92,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Open gallery and once the image is set turn on an ImageView.
      */
     private void changeProfilePic() {
-
+        Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(intentGallery,PICK_IMAGE);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,Intent data){
+        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
+            imageUri = data.getData();
+            imageButtonUserProfilePic.setImageURI(imageUri);
+        }
+    }
+
 
     /**
      * This method is only callable if editProfille is called.
