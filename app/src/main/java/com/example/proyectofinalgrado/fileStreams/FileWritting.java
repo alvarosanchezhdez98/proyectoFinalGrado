@@ -1,42 +1,43 @@
 package com.example.proyectofinalgrado.fileStreams;
 
-import android.icu.util.Output;
+import android.os.Environment;
 
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class FileWritting {
 
-    private final static String FILE_PATH="";
-    //Default Option set
-    private static String darkMode = "darkmode:-0";
-    private static String showFullName = "showfullname:-0";
-    private static String language = "language:-english";
-    private static String notifications = "darkmode:-0";
+    private static File choosedFile;
 
-    public static void setFileConfiguration(String option,String[] optionsChanges){
+    public static void setFileConfiguration(String destinationFolder,String fileName,String data){
         //Initialized Buffers to null.
-        FileOutputStream fos = null;
-        OutputStreamWriter oos = null;
-        int i=0;
+        FileWriter fw = null;
+        PrintWriter pw = null;
         try{
-            fos = new FileOutputStream(new File(FILE_PATH));
-            oos = new OutputStreamWriter(fos);
-            for (i = 0;i<optionsChanges.length ; i++) {
-
+            String filePath = (Environment.getExternalStorageDirectory() + destinationFolder);
+            File fileDirectory = new File(filePath);
+            //Check if directory exists
+            if(!fileDirectory.exists()){
+                fileDirectory.mkdir();
             }
-            String fileConfig = darkMode + "\n" +
-                    showFullName + "\n" +
-                    language + "\n" +
-                    notifications + "\n";
+            choosedFile = new File(fileDirectory,fileName);
+            choosedFile.createNewFile();
 
-            oos.write(fileConfig);
+            fw = new FileWriter(choosedFile);
+            pw = new PrintWriter(fw);
 
+            pw.println(data);
+
+            //Clearing Output Buffers
+            pw.flush();
+            pw.close();
+            fw.close();
         }catch(IOException io) {
-        }
 
+        }
     }
+
 
 }

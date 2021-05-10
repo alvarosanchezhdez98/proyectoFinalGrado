@@ -29,4 +29,6 @@
     <string name="buttonCancel">Cancel</string>
     <string name="buttonLogin">Login</string>
     <string name="textViewNotRegistered">Not registered yet? Create an account</string>
+    <string name="imageViewSplashLogo">App Logo</string>
+    <string name="textViewSplashAppName">SeekBack</string>
 </resources>
