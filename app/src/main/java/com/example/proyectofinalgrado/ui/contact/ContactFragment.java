@@ -1,5 +1,8 @@
 package com.example.proyectofinalgrado.ui.contact;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +23,7 @@ import com.example.proyectofinalgrado.R;
 public class ContactFragment extends Fragment implements View.OnClickListener {
 
     private ContactViewModel contactViewModel;
+    private final static String emailService = "ponerelnuestro@gmail.com";
 
     EditText editTextPersonFullName;
     EditText editTextEmailAddress;
@@ -48,7 +53,30 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         String userProblemDescription = editTextDescription.getText().toString();
 
         if(!userFullName.isEmpty() && ! userEmailAddress.isEmpty() && !userProblemDescription.isEmpty()){
+            sendEmail(userFullName,userEmailAddress,userProblemDescription);
+        }
+    }
 
+    private void sendEmail(String user,String email,String message) {
+        //Set where email will be send.
+        String[] to = {emailService};
+        String[] cc = {email};
+
+        Intent mailIntent = new Intent(Intent.ACTION_SEND);
+
+        //We prepare the intent to be throw
+        mailIntent.setData(Uri.parse("mailto:"));
+        mailIntent.setType("text/plain");
+        mailIntent.putExtra(Intent.EXTRA_EMAIL,to);
+        mailIntent.putExtra(Intent.EXTRA_CC, cc);
+        mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Problem");
+        mailIntent.putExtra(Intent.EXTRA_TEXT,message);
+
+        //Once intent has data we throw it.
+        try{
+            startActivity(Intent.createChooser(mailIntent,"Sending email"));
+        }catch (ActivityNotFoundException cnfe){
+            Toast.makeText(this.getActivity(), "Email client doesn't exist", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -14,10 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.proyectofinalgrado.MainActivity;
 import com.example.proyectofinalgrado.R;
 import com.example.proyectofinalgrado.firebase.FirebaseLogin;
-import com.example.proyectofinalgrado.firebase.FirebaseRegister;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
