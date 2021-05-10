@@ -11,7 +11,13 @@ public class FileWritting {
 
     private static File choosedFile;
 
-    public static void setFileConfiguration(String destinationFolder,String fileName,String data){
+    /**
+     * Method for write a file.
+     * @param destinationFolder : Folder where we want to save File.
+     * @param fileName : Name of file.
+     * @param data : Data that is going to be on the file.
+     */
+    public static void writeFile(String destinationFolder,String fileName,String data){
         //Initialized Buffers to null.
         FileWriter fw = null;
         PrintWriter pw = null;

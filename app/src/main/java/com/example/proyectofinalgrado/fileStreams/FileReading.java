@@ -13,7 +13,12 @@ public class FileReading {
 
     private static File choosedFile;
 
-    public static void setFileConfiguration(String destinationFolder,String fileName,String data){
+    /**
+     * Method for read a file,
+     * @param destinationFolder : Folder where the file is.
+     * @param fileName : Name of the file
+     */
+    public static void readFile(String destinationFolder,String fileName){
         //Initialized Buffers to null.
         FileInputStream fis = null;
         InputStreamReader isr = null;

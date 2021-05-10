@@ -55,11 +55,18 @@ public class FirebaseLogin extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * Method that start the register page.
+     * Active when clicked on not registered yet.
+     */
     private void goToRegister() {
         Intent intentRegister = new Intent(this,FirebaseRegister.class);
         startActivity(intentRegister);
     }
 
+    /**
+     * Method that tries to log in user.
+     */
     private void loginUser() {
         String email=editTextLoginEmail.getText().toString();
         String password=editTextLoginEmail.getText().toString();

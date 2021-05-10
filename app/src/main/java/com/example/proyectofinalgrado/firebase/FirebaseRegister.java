@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,22 +46,29 @@ public class FirebaseRegister extends AppCompatActivity implements View.OnClickL
         String userName = editTextUserName.getText().toString();
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
-
         //Check if all fields have a value
         if(!userName.isEmpty() && !email.isEmpty() && !password.isEmpty()){
-            userAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        String userId = userAuth.getUid();
-                        Toast.makeText(FirebaseRegister.this, "User registered with ID: " + userId, Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
-
+            registerUser(email,password);
         }else{
             Toast.makeText(this,"Some field is empty",Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Once is checked that fields are not empty.
+     * This method try to register the user and show the UID that was generated for him
+     * @param email : User Email
+     * @param password : User password
+     */
+    private void registerUser(String email,String password){
+        userAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    String userId = userAuth.getUid();
+                    Toast.makeText(FirebaseRegister.this, "User registered with ID: " + userId, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

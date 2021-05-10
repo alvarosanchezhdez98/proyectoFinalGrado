@@ -79,10 +79,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Open gallery and once the image is set turn on an ImageView.
+     */
     private void changeProfilePic() {
 
     }
 
+    /**
+     * This method is only callable if editProfille is called.
+     * Change visibility of edit componenets to gone and keep the original data.
+     *
+     */
     private void cancelChanges() {
         textViewUserFullName.setText(fullName);
         textViewUserBiography.setText(biography);
@@ -104,6 +112,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         textViewUserBiography.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Get data from Visual Components and make them Gone.
+     * Edit components go visible and appears with original data.
+     * Also appears a button to cancel edits.
+     * @Link: cancelChanges()
+     * Own button change to save and make the reverse operation.
+     */
     private void editProfile() {
         if(buttonEditProfile.getText().toString().equals("Edit Profile")){
             //Initialize variables with data

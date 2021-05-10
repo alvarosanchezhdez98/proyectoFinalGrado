@@ -16,6 +16,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //Thread that works for 2 seconds.
+        //It load the main activity and after 2 seconds, it appears.
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
