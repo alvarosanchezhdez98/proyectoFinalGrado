@@ -25,8 +25,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private ProfileViewModel profileViewModel;
 
     //For take photo from gallery
-    Uri imageUri;
-    private static final int PICK_IMAGE = 100;
     private static final int RESULT_OK=1;
 
     //Components
@@ -93,17 +91,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      */
     private void changeProfilePic() {
         Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(intentGallery,PICK_IMAGE);
+        //startActivityForResult(intentGallery,PICK_IMAGE);
+        startActivityForResult(intentGallery.createChooser(intentGallery,"Seleccione una aplicacion"),10);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode,Intent data){
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            imageButtonUserProfilePic.setImageURI(imageUri);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            Uri imagePath = data.getData();
+            imageButtonUserProfilePic.setImageURI(imagePath);
         }
     }
-
 
     /**
      * This method is only callable if editProfille is called.

@@ -43,7 +43,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageHolder> {
         if(messageList.get(position).getMessageType().equals("2")){
             holder.getImageViewMessagePic().setVisibility(View.VISIBLE);
             holder.getTextViewMessage().setVisibility(View.VISIBLE);
-            Glide.with(c).load(messageList.get(position).getUrlPic().into(holder.getImageViewMessagePic()));
+            //Glide.with(c).load(messageList.get(position).getUrlPic().into(holder.getImageViewMessagePic()));
         }else if(messageList.get(position).getMessageType().equals("1")){
             holder.getImageViewMessagePic().setVisibility(View.GONE);
             holder.getTextViewMessage().setVisibility(View.VISIBLE);
@@ -52,7 +52,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageHolder> {
         if(messageList.get(position).getProfilePic().isEmpty()){
             holder.getImageViewProfilePic().setImageResource(R.drawable.contact);
         }else{
-            Glide.with(c).load(messageList.get(position).getProfilePic()).into(holder.getImageViewProfilePic());
+            //Glide.with(c).load(messageList.get(position).getProfilePic()).into(holder.getImageViewProfilePic());
         }
         //Get message hour.
         Long timeCode = messageList.get(position).getTime();

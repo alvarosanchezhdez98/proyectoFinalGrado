@@ -105,12 +105,13 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     private File createImagefile() throws IOException{
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         //Create a tempFile for get image from camera.
-        File image = File.createTempFile(imageFileName,".jpg",storageDirectory);
+        //File image = File.createTempFile(imageFileName,".jpg",storageDirectory);
         //Save the image
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+        //currentPhotoPath = image.getAbsolutePath();
+        //return image;
+        return null;
     }
 
     /**

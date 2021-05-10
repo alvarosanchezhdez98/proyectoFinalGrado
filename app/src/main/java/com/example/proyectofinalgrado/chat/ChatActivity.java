@@ -25,10 +25,10 @@ public class ChatActivity extends AppCompatActivity {
     private ImageButton imageButtonSendPic;
 
     //Firebase Connections
-    private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    //private FirebaseDatabase database;
+    //private DatabaseReference databaseReference;
+    //private FirebaseStorage storage;
+    //private StorageReference storageReference;
 
     //Checks
     private static final int PHOTO_SEND = 1;
