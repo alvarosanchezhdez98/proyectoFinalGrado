@@ -27,18 +27,17 @@ public class FileReading {
             String filePath = (Environment.getExternalStorageDirectory() + destinationFolder);
             File fileDirectory = new File(filePath);
             //Check if directory exists
-            if(!fileDirectory.exists()){
-                fileDirectory.mkdir();
-            }
-            choosedFile = new File(fileDirectory,fileName);
+            if(fileDirectory.exists()){
+                choosedFile = new File(fileDirectory,fileName);
+                if(choosedFile.exists()){
+                    fis = new FileInputStream(choosedFile);
+                    isr = new InputStreamReader(fis);
+                    br = new BufferedReader(isr);
+                    String fileLine ="";
+                    while((fileLine=br.readLine())!=null){
 
-            fis = new FileInputStream(choosedFile);
-            isr = new InputStreamReader(fis);
-            br = new BufferedReader(isr);
-
-            String fileLine ="";
-            while((fileLine=br.readLine())!=null){
-
+                    }
+                }
             }
             br.close();
             isr.close();

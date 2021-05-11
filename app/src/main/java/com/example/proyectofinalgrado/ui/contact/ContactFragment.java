@@ -9,27 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import com.example.proyectofinalgrado.R;
+
+import java.util.Properties;
 
 public class ContactFragment extends Fragment implements View.OnClickListener {
 
     private ContactViewModel contactViewModel;
     private final static String emailService = "ponerelnuestro@gmail.com";
+    private final static String mailPassword = "Pepito2019";
 
     EditText editTextPersonFullName;
     EditText editTextEmailAddress;
     EditText editTextDescription;
     Button buttonSubmit;
 
+    //For mail.Using librarires
+    Session session;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contactViewModel =
@@ -58,25 +59,11 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     private void sendEmail(String user,String email,String message) {
-        //Set where email will be send.
-        String[] to = {emailService};
-        String[] cc = {email};
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host","smtp.googlemail.com");
+        properties.put("mail.smtp.socketFactory.port","465");
+        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.port","465");
 
-        Intent mailIntent = new Intent(Intent.ACTION_SEND);
-
-        //We prepare the intent to be throw
-        mailIntent.setData(Uri.parse("mailto:"));
-        mailIntent.setType("text/plain");
-        mailIntent.putExtra(Intent.EXTRA_EMAIL,to);
-        mailIntent.putExtra(Intent.EXTRA_CC, cc);
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Problem");
-        mailIntent.putExtra(Intent.EXTRA_TEXT,message);
-
-        //Once intent has data we throw it.
-        try{
-            startActivity(Intent.createChooser(mailIntent,"Sending email"));
-        }catch (ActivityNotFoundException cnfe){
-            Toast.makeText(this.getActivity(), "Email client doesn't exist", Toast.LENGTH_SHORT).show();
-        }
     }
 }

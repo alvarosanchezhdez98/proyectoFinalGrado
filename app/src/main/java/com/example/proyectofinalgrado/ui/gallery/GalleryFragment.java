@@ -2,6 +2,7 @@ package com.example.proyectofinalgrado.ui.gallery;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,23 +15,28 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.proyectofinalgrado.R;
+import com.example.proyectofinalgrado.imageProcessing.ImageCompression;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     private GalleryViewModel galleryViewModel;
     private static final int REQUEST_TAKE_PHOTO =1;
-    private static final int RESULT_OK=1;
+    private static final int RESULT_OK=-1;
     private String currentPhotoPath;
+    private List<ImageView> lImagenes = new ArrayList<ImageView>();
 
     //Gallery ImageViews separated for each row.
     ImageView imageView1;
@@ -67,51 +73,30 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-
+        openCamera();
     }
 
-    private void dispatchTakePictureIntent(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(takePictureIntent.resolveActivity(getActivity().getPackageManager()) !=null){
-            File photoFile = null;
-            try{
-                photoFile = createImagefile();
-            }catch(IOException io){
-                Toast.makeText(this.getActivity(),"Error al cargar la imagen",Toast.LENGTH_LONG).show();
-            }
-            if(photoFile !=null){
-                Uri photoUri = FileProvider.getUriForFile(this.getActivity(),"com.example.android.fileprovider",photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-                startActivityForResult(takePictureIntent,REQUEST_TAKE_PHOTO);
-            }
-        }
+    private void openCamera(){
+        Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intentCamera,REQUEST_TAKE_PHOTO);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+        //For add to the gallery
+        boolean added=false;
+        int i=0;
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode==RESULT_OK){
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //Sustituir por el componente que le toque.
-            //imageView.setImageBitmap(imageBitmap);
+            Bitmap image = (Bitmap) extras.get("data");
+            while(!added && i < lImagenes.size()){
+                if(lImagenes.get(i).getDrawable()==null){
+                    //Reescale the image taken.
+                    lImagenes.get(i).setImageBitmap(ImageCompression.reduceBitmapSize(image));
+                }
+            }
         }
-    }
-
-    /**
-     * Create an image and provides name and Path.
-     * @return
-     * @throws IOException
-     */
-    private File createImagefile() throws IOException{
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        //Create a tempFile for get image from camera.
-        //File image = File.createTempFile(imageFileName,".jpg",storageDirectory);
-        //Save the image
-        //currentPhotoPath = image.getAbsolutePath();
-        //return image;
-        return null;
     }
 
     /**
@@ -130,6 +115,20 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         imageView10 = root.findViewById(R.id.imageView10);
         imageView11 = root.findViewById(R.id.imageView11);
         imageView12 = root.findViewById(R.id.imageView12);
+        //Add imageView to the list.
+        lImagenes.add(imageView1);
+        lImagenes.add(imageView2);
+        lImagenes.add(imageView3);
+        lImagenes.add(imageView4);
+        lImagenes.add(imageView5);
+        lImagenes.add(imageView6);
+        lImagenes.add(imageView7);
+        lImagenes.add(imageView8);
+        lImagenes.add(imageView9);
+        lImagenes.add(imageView10);
+        lImagenes.add(imageView11);
+        lImagenes.add(imageView12);
+
 
     }
 }

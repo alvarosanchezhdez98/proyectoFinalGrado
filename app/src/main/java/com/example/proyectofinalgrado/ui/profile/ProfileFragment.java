@@ -91,7 +91,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      */
     private void changeProfilePic() {
         Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        //startActivityForResult(intentGallery,PICK_IMAGE);
         startActivityForResult(intentGallery.createChooser(intentGallery,"Seleccione una aplicacion"),10);
     }
 
