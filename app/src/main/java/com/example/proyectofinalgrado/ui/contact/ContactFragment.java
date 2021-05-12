@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.proyectofinalgrado.R;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.Properties;
 
 public class ContactFragment extends Fragment implements View.OnClickListener {
@@ -58,12 +61,38 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void sendEmail(String user,String email,String message) {
+    private void sendEmail(String user,String email,String messageProblem) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy().Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         Properties properties = new Properties();
         properties.put("mail.smtp.host","smtp.googlemail.com");
         properties.put("mail.smtp.socketFactory.port","465");
         properties.put("mail.smtp.auth","true");
         properties.put("mail.smtp.port","465");
+
+        try{
+            session = Session.getDefaultInstance(properties,new Authenticator(){
+               @Override
+               protected PasswordAuthentication getPasswordAuthentication(){
+                   return new PasswordAuthentication(email,mailPassword);
+               }
+            });
+
+            if(session!=null){
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(emailService));
+                message.setSubject("Prueba Correo");
+                message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));
+                message.setContent(messageProblem,"text/html; charset=utf-8");
+                Transport transport = session.getTransport("smtp");
+                transport.connect("smtp.live.com",587,emailService,mailPassword);
+                transport.sendMessage(messageProblem,message.getAllRecipients());
+                transport.close();
+            }
+        }catch (Exception e){
+            Toast.makeText(this.getContext(), "Could not send email", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }
