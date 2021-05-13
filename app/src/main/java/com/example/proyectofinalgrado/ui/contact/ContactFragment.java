@@ -1,8 +1,6 @@
 package com.example.proyectofinalgrado.ui.contact;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
@@ -17,9 +15,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import com.example.proyectofinalgrado.R;
 
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
+
 import java.util.Properties;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class ContactFragment extends Fragment implements View.OnClickListener {
 
@@ -62,7 +67,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     }
 
     private void sendEmail(String user,String email,String messageProblem) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy().Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         Properties properties = new Properties();
@@ -75,7 +80,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
             session = Session.getDefaultInstance(properties,new Authenticator(){
                @Override
                protected PasswordAuthentication getPasswordAuthentication(){
-                   return new PasswordAuthentication(email,mailPassword);
+                   return new javax.mail.PasswordAuthentication(email,mailPassword);
                }
             });
 
@@ -87,7 +92,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 message.setContent(messageProblem,"text/html; charset=utf-8");
                 Transport transport = session.getTransport("smtp");
                 transport.connect("smtp.live.com",587,emailService,mailPassword);
-                transport.sendMessage(messageProblem,message.getAllRecipients());
+                transport.sendMessage(message,message.getAllRecipients());
                 transport.close();
             }
         }catch (Exception e){
