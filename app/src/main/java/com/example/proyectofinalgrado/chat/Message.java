@@ -1,73 +1,47 @@
 package com.example.proyectofinalgrado.chat;
 
+import java.util.Date;
+
 public class Message {
 
-    private String message;
-    private String urlPic;
-    private String name;
-    private String profilePic;
-    private String messageType;
+    private String messageText;//Displays message data.
+    private String messageUser;//Displays User Name
+    private long messageTime;//Displays message time.
 
-    //Default Constructor.
+    //Default Constructor
     public Message(){
 
     }
 
-    //Constructor if message doesnt contains an image.
-    public Message(String message,String name,String profilePic,String messageType){
-        this.message=message;
-        this.name=name;
-        this.profilePic=profilePic;
-        this.messageType = messageType;
+    //Constructor
+    public Message(String messageText,String messageUser){
+        this.messageText=messageText;
+        this.messageUser=messageUser;
+        //Initializa message time with system time.
+        messageTime = new Date().getTime();
     }
 
-    //Constructor if message containts an image.
-    public Message(String message,String urlPic,String name,String profilePic,String messageType){
-        this.message=message;
-        this.urlPic=urlPic;
-        this.name=name;
-        this.profilePic=profilePic;
-        this.messageType=messageType;
+    public String getMessageText() {
+        return messageText;
     }
 
-    //Getters and Setters
-    public String getMessage() {
-        return message;
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getMessageUser() {
+        return messageUser;
     }
 
-    public String getUrlPic() {
-        return urlPic;
+    public void setMessageUser(String messageUser) {
+        this.messageUser = messageUser;
     }
 
-    public void setUrlPic(String urlPic) {
-        this.urlPic = urlPic;
+    public long getMessageTime() {
+        return messageTime;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getProfilePic() {
-        return profilePic;
-    }
-
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
+    public void setMessageTime(long messageTime) {
+        this.messageTime = messageTime;
     }
 }

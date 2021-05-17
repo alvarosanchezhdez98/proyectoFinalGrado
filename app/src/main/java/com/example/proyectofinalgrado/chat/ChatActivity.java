@@ -1,52 +1,73 @@
 package com.example.proyectofinalgrado.chat;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.proyectofinalgrado.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
-public class ChatActivity extends AppCompatActivity {
+import java.text.DateFormat;
+
+public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Interface components
-    private ImageView imageViewProfilePic;
-    private TextView textViewName;
-    private RecyclerView recyclerViewMessages;
-    private EditText editTextMessage;
-    private Button buttonEnviar;
-    private MessageAdapter adapter;
-    private ImageButton imageButtonSendPic;
+    private  EditText editTextMessage;
+    private  FloatingActionButton buttonSendMessage;
+    private  ListView listViewMessages;
 
-    //Firebase Connections
-    //private FirebaseDatabase database;
-    //private DatabaseReference databaseReference;
-    //private FirebaseStorage storage;
-    //private StorageReference storageReference;
+    private static FirebaseListAdapter adapter;
 
-    //Checks
-    private static final int PHOTO_SEND = 1;
-    private static final int PHOTO_PROFILE = 2;
-    private String uriProfilePic;
+    //Components of message display model
+    private  TextView textViewMessageUser;
+    private  TextView textViewMessageTime;
+    private  TextView textViewMessageText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        editTextMessage = findViewById(R.id.editTextMessageText);
+        buttonSendMessage = findViewById(R.id.buttonSendMessage);
+        listViewMessages = findViewById(R.id.listViewMessages);
+
+        buttonSendMessage.setOnClickListener(this);
     }
 
-    private void setScrollBar() {
+    private void displayMessages(){
+        adapter = new FirebaseListAdapter<Message>(this,Message.class),
+        R.layout.message,FirebaseDatabase.getInstance().getReference()){
+            @Override
+            protected void showView(View v,Message modelMessage,int position){
+                textViewMessageUser = v.findViewById(R.id.textViewMessageUser);
+                textViewMessageTime = v.findViewById(R.id.textViewMessageTime);
+                textViewMessageText = v.findViewById(R.id.textViewMessageText);
 
+                //Set the data
+                textViewMessageText.setText(modelMessage.getMessageText());
+                textViewMessageUser.setText(modelMessage.getMessageUser());
+
+                //Format time data
+                textViewMessageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",modelMessage.getMessageTime()));
+            }
+        };
+        //Set the adapter to the listView
+        listViewMessages.setAdapter(adapter);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+    public void onClick(View v) {
+        //Get Firebase instance
+        FirebaseDatabase.getInstance().getReference().push().setValue(new Message(editTextMessage.getText().toString(),
+                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+        //Clear text componenet
+        editTextMessage.setText("");
     }
 }

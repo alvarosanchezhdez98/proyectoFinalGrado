@@ -2,32 +2,22 @@ package com.example.proyectofinalgrado.ui.gallery;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.proyectofinalgrado.R;
 import com.example.proyectofinalgrado.imageProcessing.ImageCompression;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements View.OnClickListener {
