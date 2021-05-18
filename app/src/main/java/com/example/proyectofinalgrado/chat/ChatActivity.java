@@ -9,8 +9,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.proyectofinalgrado.R;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 
@@ -42,10 +44,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayMessages(){
-        adapter = new FirebaseListAdapter<Message>(this,Message.class),
-        R.layout.message,FirebaseDatabase.getInstance().getReference()){
+        /*adapter = new FirebaseListAdapter<Message>(this,Message.class),
+        R.layout.message, FirebaseDatabase.getInstance().getReference(),{
             @Override
-            protected void showView(View v,Message modelMessage,int position){
+            protected void showView(View v;Message modelMessage,int position){
                 textViewMessageUser = v.findViewById(R.id.textViewMessageUser);
                 textViewMessageTime = v.findViewById(R.id.textViewMessageTime);
                 textViewMessageText = v.findViewById(R.id.textViewMessageText);
@@ -59,7 +61,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         //Set the adapter to the listView
-        listViewMessages.setAdapter(adapter);
+        listViewMessages.setAdapter(adapter);*/
     }
 
     @Override

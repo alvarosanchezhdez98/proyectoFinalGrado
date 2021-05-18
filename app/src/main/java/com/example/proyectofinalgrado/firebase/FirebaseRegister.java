@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FirebaseRegister extends AppCompatActivity implements View.OnClickListener {
 
-    EditText editTextUserName;
     EditText editTextEmail;
     EditText editTextPassword;
+    EditText editTextConfirmPassword;
     Button buttonRegister;
 
 
@@ -31,7 +32,7 @@ public class FirebaseRegister extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_register);
 
-        editTextUserName = findViewById(R.id.editTextUserName);
+        editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword);
         editTextEmail= findViewById(R.id.editTextEmailAddress);
         editTextPassword = findViewById(R.id.editTextUserPassword);
         buttonRegister = findViewById(R.id.buttonRegister);
@@ -43,12 +44,16 @@ public class FirebaseRegister extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        String userName = editTextUserName.getText().toString();
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
+        String confirmPassword = editTextConfirmPassword.getText().toString();
         //Check if all fields have a value
-        if(!userName.isEmpty() && !email.isEmpty() && !password.isEmpty()){
-            registerUser(email,password);
+        if(!confirmPassword.isEmpty() && !email.isEmpty() && !password.isEmpty()){
+            if(password.equals(confirmPassword)){
+                registerUser(email,password);
+            }else{
+                Toast.makeText(this, "Passwords doesn't match", Toast.LENGTH_SHORT).show();
+            }
         }else{
             Toast.makeText(this,"Some field is empty",Toast.LENGTH_LONG).show();
         }
@@ -67,6 +72,10 @@ public class FirebaseRegister extends AppCompatActivity implements View.OnClickL
                 if(task.isSuccessful()){
                     String userId = userAuth.getUid();
                     Toast.makeText(FirebaseRegister.this, "User registered with ID: " + userId, Toast.LENGTH_LONG).show();
+                    Intent intentLogin = new Intent(FirebaseRegister.this,FirebaseLogin.class);
+                    startActivity(intentLogin);
+                }else{
+                    Toast.makeText(FirebaseRegister.this, "Email already registered", Toast.LENGTH_SHORT).show();
                 }
             }
         });

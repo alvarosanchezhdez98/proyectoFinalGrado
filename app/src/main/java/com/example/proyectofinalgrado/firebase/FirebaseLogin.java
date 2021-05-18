@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.proyectofinalgrado.MainActivity;
 import com.example.proyectofinalgrado.R;
+import com.example.proyectofinalgrado.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -77,6 +79,7 @@ public class FirebaseLogin extends AppCompatActivity implements View.OnClickList
                     if(task.isSuccessful()){
                         Toast.makeText(FirebaseLogin.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
                         //Make intent to Main Activity.
+                        Intent intentHome = new Intent(FirebaseLogin.this, MainActivity.class);
                     }else{
                         Toast.makeText(FirebaseLogin.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     }
