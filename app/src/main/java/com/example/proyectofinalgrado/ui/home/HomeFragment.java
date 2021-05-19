@@ -13,9 +13,11 @@ import com.example.proyectofinalgrado.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback {
@@ -24,6 +26,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap googleMaps;
     private MapView mapView;
+    View root;
+
+    /**
+     *Free google maps api doesn't provide markers as shown in
+     * Maps app so for Testing the app we must create some markers.
+     * Consider also that paid maps api follows the same params as free api.
+     * So if we change the api the integration should works fine.
+     */
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -31,22 +41,45 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
-        supportMapFragment.getMapAsync(this::onMapReady);
         return root;
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //We charge google map in app memory.
-        googleMaps = googleMap;
-        //Add default Marker.
-        LatLng main = new LatLng(34,151);
-        //Add Marker
-        googleMaps.addMarker(new MarkerOptions().position(main).title("Marker"));
-        googleMaps.moveCamera(CameraUpdateFactory.newLatLng(main));
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mapView = (MapView) root.findViewById(R.id.mapView);
+        if(mapView!=null){
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this::onMapReady);
+        }
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+        googleMaps = googleMap;
+        googleMaps.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        initializeMarkers(googleMap);
+
+        CameraPosition defaultPosition = CameraPosition.builder().target(new LatLng(40.04253781066574, -6.087924015453656)).zoom(16).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
+    }
+
+    private void initializeMarkers(GoogleMap googleMap){
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.04253781066574, -6.087924015453656)).title("Marcador 1"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.040667280077784, -6.08623511609299)).title("Marcador 2"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.039692336944505, -6.082462737128786)).title("Marcador 3"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.040998728095666, -6.078210665184567)).title("Marcador 4"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.03733049431723, -6.082032158901517)).title("Marcador 5"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.035640149117015, -6.084233757240491)).title("Marcador 6"));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(40.033018688563985, -6.080353863350438)).title("Marcador 7"));
+
+
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package com.example.proyectofinalgrado.ui.profile;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -38,8 +40,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     Button buttonCancel;
 
     //User data.
-    private String fullName;
-    private String biography;
+    private static String fullName;
+    private static String biography;
+    private static Uri imagePath;
+    private static SharedPreferences profilePreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         buttonCancel.setOnClickListener(this);
         imageButtonUserProfilePic.setOnClickListener(this);
 
+        profilePreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         return root;
     }
@@ -98,7 +103,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
-            Uri imagePath = data.getData();
+            imagePath = data.getData();
             imageButtonUserProfilePic.setImageURI(imagePath);
         }
     }
@@ -187,7 +192,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 imageViewUserProfilePic.setVisibility(View.VISIBLE);
                 textViewUserFullName.setVisibility(View.VISIBLE);
                 textViewUserBiography.setVisibility(View.VISIBLE);
+                saveProfilePreferences();
             }
         }
+    }
+
+    public static void saveProfilePreferences(){
+        SharedPreferences.Editor editor = profilePreferences.edit();
+        if(fullName!=null){
+            editor.putString("fullName",fullName);
+        }
+        if(imagePath!=null){
+            editor.putString("imagePath",imagePath.toString());
+        }
+        if(biography!=null){
+            editor.putString("biography",biography);
+        }
+    }
+
+    public static void loadProfilePreferences(){
+        String savedFullName,savedBiography,savedImagePath;
+        savedFullName = profilePreferences.getString("fullName","User Full Name");
+        savedBiography = profilePreferences.getString("biography","User Biography");
+        savedImagePath = profilePreferences.getString("imagePath",null);
     }
 }

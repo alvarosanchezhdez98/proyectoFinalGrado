@@ -11,10 +11,9 @@ import android.widget.TextView;
 import com.example.proyectofinalgrado.R;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,54 +21,41 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private  EditText editTextMessage;
     private  FloatingActionButton buttonSendMessage;
     private  ListView listViewMessages;
+    private FirebaseListAdapter<Message> firebaseListAdapter;
 
-    private static FirebaseListAdapter adapter;
-
-    //Components of message display model
-    private  TextView textViewMessageUser;
-    private  TextView textViewMessageTime;
-    private  TextView textViewMessageText;
-
+    private String dateFormat = "hh: mm: ss a dd-MMM-aaaa";
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-        editTextMessage = findViewById(R.id.editTextMessageText);
         buttonSendMessage = findViewById(R.id.buttonSendMessage);
-        listViewMessages = findViewById(R.id.listViewMessages);
+        editTextMessage = findViewById(R.id.editTextMessageText);
 
         buttonSendMessage.setOnClickListener(this);
     }
 
     private void displayMessages(){
-        /*adapter = new FirebaseListAdapter<Message>(this,Message.class),
-        R.layout.message, FirebaseDatabase.getInstance().getReference(),{
+        listViewMessages = findViewById(R.id.listViewMessages);
+        firebaseListAdapter = new FirebaseListAdapter<Message>(this,Message.class,R.layout.message,FirebaseDatabase.getInstance().getReference()) {
             @Override
-            protected void showView(View v;Message modelMessage,int position){
-                textViewMessageUser = v.findViewById(R.id.textViewMessageUser);
-                textViewMessageTime = v.findViewById(R.id.textViewMessageTime);
-                textViewMessageText = v.findViewById(R.id.textViewMessageText);
+            protected void populateView(View v, Message model, int position) {
+                //Initialize message layout components
+                TextView textViewMessageUser = v.findViewById(R.id.textViewMessageUser);
+                TextView textViewMessageTime = v.findViewById(R.id.textViewMessageTime);
+                TextView textViewMessageText = v.findViewById(R.id.textViewMessageText);
 
-                //Set the data
-                textViewMessageText.setText(modelMessage.getMessageText());
-                textViewMessageUser.setText(modelMessage.getMessageUser());
-
-                //Format time data
-                textViewMessageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",modelMessage.getMessageTime()));
+                textViewMessageUser.setText(model.getMessageUser());
+                textViewMessageText.setText(model.getMessageText());
+                textViewMessageTime.setText(simpleDateFormat.format(model.getMessageTime()));
             }
         };
-        //Set the adapter to the listView
-        listViewMessages.setAdapter(adapter);*/
+        listViewMessages.setAdapter(firebaseListAdapter);
     }
 
     @Override
     public void onClick(View v) {
-        //Get Firebase instance
-        FirebaseDatabase.getInstance().getReference().push().setValue(new Message(editTextMessage.getText().toString(),
-                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
-        //Clear text componenet
-        editTextMessage.setText("");
+        displayMessages();
     }
 }
