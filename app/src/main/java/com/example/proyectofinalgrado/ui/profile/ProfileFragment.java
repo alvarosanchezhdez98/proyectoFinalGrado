@@ -145,7 +145,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 20){
             if(resultCode == Activity.RESULT_OK && data!=null){
-                Bitmap photoSelected = (Bitmap) data.getExtras().get("data");
                 Uri uri = data.getData();
                 try{
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(),uri);
@@ -223,7 +222,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             fullName = editTextUserFullName.getText().toString();
             biography = editTextUserBiography.getText().toString();
             if(!fullName.isEmpty() && !biography.isEmpty()){
-                //imageViewUserProfilePic.setImageDrawable(imageButtonUserProfilePic.getDrawable());
+                imageViewUserProfilePic.setImageDrawable(imageButtonUserProfilePic.getDrawable());
                 textViewUserFullName.setText(fullName);
                 textViewUserBiography.setText(biography);
                 buttonEditProfile.setText("Edit Profile");
@@ -269,5 +268,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         textViewUserFullName.setText(savedFullName);
         textViewUserBiography.setText(savedBiography);
+        if(savedImagePath!=null){
+            Uri imageUri = Uri.parse(savedImagePath);
+            imageViewUserProfilePic.setImageURI(imageUri);
+        }else{
+            imageViewUserProfilePic.setImageResource(R.drawable.logo);
+        }
     }
 }

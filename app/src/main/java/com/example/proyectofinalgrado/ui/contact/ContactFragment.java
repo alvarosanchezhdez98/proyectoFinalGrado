@@ -3,6 +3,7 @@ package com.example.proyectofinalgrado.ui.contact;
 
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,34 +72,44 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         StrictMode.setThreadPolicy(policy);
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.host","mail.gmail.com");
-        properties.put("mail.smtp.starttls.enable","true");
-        properties.put("mail.smtp.port",25);
-        properties.put("mail.smtp.mail.sender",email);
-        properties.put("mail.smtp.user",user);
-        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.host","smtp.googlemail.com");
+        properties.put("mail.smtp.socketFactory.port","465");
+        properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.auth",true);
+        properties.put("mail.smtp.port","587");
 
         try{
             session = Session.getDefaultInstance(properties,new Authenticator(){
                @Override
                protected PasswordAuthentication getPasswordAuthentication(){
-                   return new javax.mail.PasswordAuthentication(email,mailPassword);
+                   return new PasswordAuthentication(email,mailPassword);
                }
+            });
+
+            session = Session.getDefaultInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(emailService,mailPassword);
+                }
             });
 
             if(session!=null){
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress((String)properties.getProperty("mail.smtp.mail.sender")));
-                message.addRecipient(Message.RecipientType.TO,new InternetAddress(emailService));
-                message.setSubject("Prueba Correo");
-                message.setText(messageProblem);
-                Transport transport = session.getTransport("smtp");
-                transport.connect((String)properties.get("mail.smtp.user"),mailPassword);
-                transport.sendMessage(message,message.getAllRecipients());
-                transport.close();
+                message.setFrom(new InternetAddress(emailService));
+                message.setSubject("LoopBack");
+                message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));
+                //message.setRecipients(Message.RecipientType.CC,InternetAddress.parse(emailService));
+                message.setContent(messageProblem,"text/html; charset=utf-8");
+
+                Transport.send(message);
+
+
             }
         }catch (Exception me){
-            Toast.makeText(this.getContext(), "Could not send email", Toast.LENGTH_SHORT).show();
+            Log.i("TAG",me.getMessage());
+            Toast.makeText(this.getContext(), "2"+me.getMessage(), Toast.LENGTH_SHORT).show();
+            me.printStackTrace();
+            //Toast.makeText(this.getContext(), "Could not send email", Toast.LENGTH_SHORT).show();
         }
 
     }
