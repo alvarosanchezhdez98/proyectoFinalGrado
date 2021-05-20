@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.proyectofinalgrado.R;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +32,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         buttonSendMessage = findViewById(R.id.buttonSendMessage);
-        editTextMessage = findViewById(R.id.editTextMessageText);
 
         buttonSendMessage.setOnClickListener(this);
     }
@@ -56,6 +56,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        editTextMessage = findViewById(R.id.editTextMessageText);
+        FirebaseDatabase.getInstance().getReference().push().setValue(new Message(editTextMessage.getText().toString(),
+                FirebaseAuth.getInstance().getCurrentUser().getDisplayName()));
+
+        editTextMessage.setText("");
         displayMessages();
     }
 }

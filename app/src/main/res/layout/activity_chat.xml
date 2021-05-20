@@ -7,13 +7,14 @@
     tools:context=".chat.ChatActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonSendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:id="@+id/buttonSendMessage"
-        android:tint="@android:color/white"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:src="@drawable/send"
+        android:tint="@android:color/white"
         app:fabSize="mini" />
 
 

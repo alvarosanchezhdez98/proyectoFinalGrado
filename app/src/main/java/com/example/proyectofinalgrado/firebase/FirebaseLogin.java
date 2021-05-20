@@ -79,6 +79,7 @@ public class FirebaseLogin extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(FirebaseLogin.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
                         //Make intent to Main Activity.
                         Intent intentHome = new Intent(FirebaseLogin.this, MainActivity.class);
+                        startActivity(intentHome);
                     }else{
                         Toast.makeText(FirebaseLogin.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                     }
