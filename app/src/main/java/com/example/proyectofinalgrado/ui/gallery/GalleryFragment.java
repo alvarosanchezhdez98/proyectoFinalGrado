@@ -1,23 +1,38 @@
 package com.example.proyectofinalgrado.ui.gallery;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.proyectofinalgrado.R;
 import com.example.proyectofinalgrado.imageProcessing.ImageCompression;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GalleryFragment extends Fragment implements View.OnClickListener {
@@ -25,8 +40,14 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     private GalleryViewModel galleryViewModel;
     private static final int REQUEST_TAKE_PHOTO =1;
     private static final int RESULT_OK=-1;
-    private String currentPhotoPath;
     private List<ImageView> lImagenes = new ArrayList<ImageView>();
+
+
+    private  final String IMAGES_DIRECTORY="images/loopBackImages";
+    private String currentPhotoPath;
+    File fileImage;
+    Bitmap bitmap;
+
 
     //Gallery ImageViews separated for each row.
     ImageView imageView1;
@@ -57,6 +78,12 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         linkImageViews(root);
         imageButtonTakePic = root.findViewById(R.id.imageButtonTakePic);
         imageButtonTakePic.setOnClickListener(this);
+
+        //Ask user for permission
+        if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},1000);
+        }
         return root;
     }
 
@@ -68,23 +95,32 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     private void openCamera(){
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intentCamera,REQUEST_TAKE_PHOTO);
+        try{
+            startActivityForResult(intentCamera,REQUEST_TAKE_PHOTO);
+        }catch (ActivityNotFoundException anfe){
+            Toast.makeText(this.getContext(), "Error", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         //For add to the gallery
         boolean added=false;
         int i=0;
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode==RESULT_OK){
-            Bundle extras = data.getExtras();
-            Bitmap image = (Bitmap) extras.get("data");
-            while(!added && i < lImagenes.size()){
-                if(lImagenes.get(i).getDrawable()==null){
-                    //Reescale the image taken.
-                    lImagenes.get(i).setImageBitmap(ImageCompression.reduceBitmapSize(image));
+        if(requestCode == 20){
+            MediaScannerConnection.scanFile(this.getContext(), new String[]{currentPhotoPath}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                @Override
+                public void onScanCompleted(String s, Uri uri) {
+
                 }
+            });
+            bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+            while (!added && i<lImagenes.size()){
+                lImagenes.get(i).setImageBitmap(bitmap);
+                i++;
+                added=true;
             }
         }
     }
@@ -118,7 +154,5 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         lImagenes.add(imageView10);
         lImagenes.add(imageView11);
         lImagenes.add(imageView12);
-
-
     }
 }

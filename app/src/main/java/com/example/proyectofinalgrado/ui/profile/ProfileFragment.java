@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editTextUserBiography = root.findViewById(R.id.editTextUserBiography);
         buttonEditProfile = root.findViewById(R.id.buttonEditProfile);
         buttonCancel = root.findViewById(R.id.buttonCancel);
+        loadProfilePreferences();
 
         buttonEditProfile.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);

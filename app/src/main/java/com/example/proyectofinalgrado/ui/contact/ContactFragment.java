@@ -18,18 +18,18 @@ import com.example.proyectofinalgrado.R;
 
 import java.util.Properties;
 
-import javax.mail.Authenticator;
+/*import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage;*/
 
 public class ContactFragment extends Fragment implements View.OnClickListener {
 
     private ContactViewModel contactViewModel;
-    private final static String emailService = "ponerelnuestro@gmail.com";
+    private final static String emailService = "asirproyectoredsocial@gmail.com";
     private final static String mailPassword = "Pepito2019";
 
     EditText editTextPersonFullName;
@@ -38,7 +38,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     Button buttonSubmit;
 
     //For mail.Using librarires
-    Session session;
+    //Session session;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contactViewModel =
@@ -71,12 +71,14 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         StrictMode.setThreadPolicy(policy);
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.host","smtp.googlemail.com");
-        properties.put("mail.smtp.socketFactory.port","465");
+        properties.put("mail.smtp.host","mail.gmail.com");
+        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.smtp.port",25);
+        properties.put("mail.smtp.mail.sender",email);
+        properties.put("mail.smtp.user",user);
         properties.put("mail.smtp.auth","true");
-        properties.put("mail.smtp.port","465");
 
-        try{
+        /*try{
             session = Session.getDefaultInstance(properties,new Authenticator(){
                @Override
                protected PasswordAuthentication getPasswordAuthentication(){
@@ -86,18 +88,18 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
 
             if(session!=null){
                 Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(emailService));
+                message.setFrom(new InternetAddress((String)properties.getProperty("mail.smtp.mail.sender")));
+                message.addRecipient(Message.RecipientType.TO,new InternetAddress(emailService));
                 message.setSubject("Prueba Correo");
-                message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(email));
-                message.setContent(messageProblem,"text/html; charset=utf-8");
+                message.setText(messageProblem);
                 Transport transport = session.getTransport("smtp");
-                transport.connect("smtp.live.com",587,emailService,mailPassword);
+                transport.connect((String)properties.get("mail.smtp.user"),mailPassword);
                 transport.sendMessage(message,message.getAllRecipients());
                 transport.close();
             }
-        }catch (Exception e){
+        }catch (MessageException me){
             Toast.makeText(this.getContext(), "Could not send email", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
     }
 }
