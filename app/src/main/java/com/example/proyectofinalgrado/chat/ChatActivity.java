@@ -21,7 +21,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private  EditText editTextMessage;
     private  FloatingActionButton buttonSendMessage;
     private  ListView listViewMessages;
-    private FirebaseListAdapter<Message> firebaseListAdapter;
+    private  FirebaseListAdapter<Message> firebaseListAdapter;
 
     private String dateFormat = "hh: mm: ss a dd-MMM-aaaa";
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);

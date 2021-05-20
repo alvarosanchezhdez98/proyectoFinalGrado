@@ -1,9 +1,14 @@
 package com.example.proyectofinalgrado.ui.profile;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -14,9 +19,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -59,7 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editTextUserBiography = root.findViewById(R.id.editTextUserBiography);
         buttonEditProfile = root.findViewById(R.id.buttonEditProfile);
         buttonCancel = root.findViewById(R.id.buttonCancel);
-        loadProfilePreferences();
+        //loadProfilePreferences();
 
         buttonEditProfile.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
@@ -87,25 +94,53 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 cancelChanges();
                 break;
             case R.id.imageButtonUserProfilePic:
-                changeProfilePic();
+                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+                    if(ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                        changeProfilePic();
+                    }else{
+                        ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},20);
+                    }
+                }else{
+                    changeProfilePic();
+                }
+
                 break;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == 20){
+            if(permissions.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                changeProfilePic();
+            }else{
+                Toast.makeText(this.getContext(), "Permission needed", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
      * Open gallery and once the image is set turn on an ImageView.
      */
     private void changeProfilePic() {
-        Intent intentGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(intentGallery.createChooser(intentGallery,"Seleccione una aplicacion"),10);
+        Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
+        intentGallery.setType("image/*");
+        startActivityForResult(intentGallery,10);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            imagePath = data.getData();
-            imageButtonUserProfilePic.setImageURI(imagePath);
+        if(requestCode == 20){
+            if(resultCode == Activity.RESULT_OK && data!=null){
+                Bitmap photoSelected = (Bitmap) data.getExtras().get("data");
+                //imageButtonUserProfilePic.setImageBitmap(photoSelected);
+                imageViewUserProfilePic.setImageBitmap(photoSelected);
+            }else{
+                Toast.makeText(this.getActivity(), "Photo no Selected", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -173,7 +208,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             fullName = editTextUserFullName.getText().toString();
             biography = editTextUserBiography.getText().toString();
             if(!fullName.isEmpty() && !biography.isEmpty()){
-                imageViewUserProfilePic.setImageDrawable(imageButtonUserProfilePic.getDrawable());
+                //imageViewUserProfilePic.setImageDrawable(imageButtonUserProfilePic.getDrawable());
                 textViewUserFullName.setText(fullName);
                 textViewUserBiography.setText(biography);
                 buttonEditProfile.setText("Edit Profile");

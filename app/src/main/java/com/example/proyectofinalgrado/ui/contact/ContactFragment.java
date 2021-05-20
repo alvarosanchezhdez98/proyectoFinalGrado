@@ -18,13 +18,13 @@ import com.example.proyectofinalgrado.R;
 
 import java.util.Properties;
 
-/*import javax.mail.Authenticator;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;*/
+import javax.mail.internet.MimeMessage;
 
 public class ContactFragment extends Fragment implements View.OnClickListener {
 
@@ -38,7 +38,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
     Button buttonSubmit;
 
     //For mail.Using librarires
-    //Session session;
+    Session session;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         contactViewModel =
@@ -78,7 +78,7 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
         properties.put("mail.smtp.user",user);
         properties.put("mail.smtp.auth","true");
 
-        /*try{
+        try{
             session = Session.getDefaultInstance(properties,new Authenticator(){
                @Override
                protected PasswordAuthentication getPasswordAuthentication(){
@@ -97,9 +97,9 @@ public class ContactFragment extends Fragment implements View.OnClickListener {
                 transport.sendMessage(message,message.getAllRecipients());
                 transport.close();
             }
-        }catch (MessageException me){
+        }catch (Exception me){
             Toast.makeText(this.getContext(), "Could not send email", Toast.LENGTH_SHORT).show();
-        }*/
+        }
 
     }
 }

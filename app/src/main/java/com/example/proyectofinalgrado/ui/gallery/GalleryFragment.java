@@ -1,6 +1,7 @@
 package com.example.proyectofinalgrado.ui.gallery;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import com.example.proyectofinalgrado.imageProcessing.ImageCompression;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Permission;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,10 +45,9 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     private List<ImageView> lImagenes = new ArrayList<ImageView>();
 
 
-    private  final String IMAGES_DIRECTORY="images/loopBackImages";
-    private String currentPhotoPath;
-    File fileImage;
-    Bitmap bitmap;
+    private final String IMAGES_DIRECTORY="images/";
+    private final String IMAGE_PATH=IMAGES_DIRECTORY+"loopBack";
+    String imagePath="";
 
 
     //Gallery ImageViews separated for each row.
@@ -79,50 +80,53 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         imageButtonTakePic = root.findViewById(R.id.imageButtonTakePic);
         imageButtonTakePic.setOnClickListener(this);
 
-        //Ask user for permission
-        if(ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},1000);
-        }
         return root;
     }
 
 
     @Override
-    public void onClick(View view) {
-        openCamera();
+    public void onClick(View view)
+    {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            if(ActivityCompat.checkSelfPermission(this.getActivity(),Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
+                openCamera();
+            }else{
+                ActivityCompat.requestPermissions(this.getActivity(),new String[]{Manifest.permission.CAMERA},30);
+            }
+        }else{
+            openCamera();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults) {
+        if(requestCode == 30){
+            if(permissions.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                openCamera();
+            }else{
+                Toast.makeText(this.getActivity(), "You need to grant permission", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void openCamera(){
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        try{
-            startActivityForResult(intentCamera,REQUEST_TAKE_PHOTO);
-        }catch (ActivityNotFoundException anfe){
-            Toast.makeText(this.getContext(), "Error", Toast.LENGTH_SHORT).show();
+        //Check if device has a camera app.
+        if(intentCamera.resolveActivity(getActivity().getPackageManager())!=null){
+            startActivityForResult(intentCamera,20);
         }
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //For add to the gallery
-        boolean added=false;
-        int i=0;
-        if(requestCode == 20){
-            MediaScannerConnection.scanFile(this.getContext(), new String[]{currentPhotoPath}, null, new MediaScannerConnection.OnScanCompletedListener() {
-                @Override
-                public void onScanCompleted(String s, Uri uri) {
-
-                }
-            });
-            bitmap = BitmapFactory.decodeFile(currentPhotoPath);
-            while (!added && i<lImagenes.size()){
-                lImagenes.get(i).setImageBitmap(bitmap);
-                i++;
-                added=true;
+        if(resultCode == 20){
+            if(resultCode == Activity.RESULT_OK){
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                imageView1.setImageBitmap(bitmap);
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

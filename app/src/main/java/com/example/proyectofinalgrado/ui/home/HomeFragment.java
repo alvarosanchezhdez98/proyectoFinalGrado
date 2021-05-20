@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.proyectofinalgrado.MainActivity;
 import com.example.proyectofinalgrado.R;
 import com.example.proyectofinalgrado.chat.ChatActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,7 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMarkerClickListener {
 
     private HomeViewModel homeViewModel;
 
@@ -76,6 +77,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         initializeMarkers(googleMap);
         //googleMaps.setOnMarkerClickListener(this);
         googleMaps.setOnInfoWindowClickListener(this);
+        googleMaps.setOnMarkerClickListener(this);
         CameraPosition defaultPosition = CameraPosition.builder().target(new LatLng(40.04253781066574, -6.087924015453656)).zoom(16).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
     }
@@ -94,5 +96,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public void onInfoWindowClick(Marker marker) {
         Intent intentChat = new Intent(this.getActivity(), ChatActivity.class);
         startActivity(intentChat);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intentChat = new Intent(this.getActivity(),ChatActivity.class);
+        startActivity(intentChat);
+        return false;
     }
 }
