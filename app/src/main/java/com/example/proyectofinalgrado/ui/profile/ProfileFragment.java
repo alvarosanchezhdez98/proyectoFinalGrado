@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +31,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.proyectofinalgrado.R;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -66,13 +74,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editTextUserBiography = root.findViewById(R.id.editTextUserBiography);
         buttonEditProfile = root.findViewById(R.id.buttonEditProfile);
         buttonCancel = root.findViewById(R.id.buttonCancel);
-        //loadProfilePreferences();
+
 
         buttonEditProfile.setOnClickListener(this);
         buttonCancel.setOnClickListener(this);
         imageButtonUserProfilePic.setOnClickListener(this);
 
         profilePreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        loadProfilePreferences();
 
         return root;
     }
@@ -124,9 +133,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * Open gallery and once the image is set turn on an ImageView.
      */
     private void changeProfilePic() {
+        //Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
         Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
         intentGallery.setType("image/*");
-        startActivityForResult(intentGallery,10);
+        startActivityForResult(Intent.createChooser(intentGallery,"Select an App"),10);
 
     }
 
@@ -136,8 +146,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if(requestCode == 20){
             if(resultCode == Activity.RESULT_OK && data!=null){
                 Bitmap photoSelected = (Bitmap) data.getExtras().get("data");
-                //imageButtonUserProfilePic.setImageBitmap(photoSelected);
-                imageViewUserProfilePic.setImageBitmap(photoSelected);
+                Uri uri = data.getData();
+                try{
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(),uri);
+                    imageButtonUserProfilePic.setImageBitmap(bitmap);
+                }catch (IOException fnfe){
+                    Toast.makeText(this.getContext(), "Couldn't load image", Toast.LENGTH_SHORT).show();
+                }
             }else{
                 Toast.makeText(this.getActivity(), "Photo no Selected", Toast.LENGTH_SHORT).show();
             }
@@ -233,7 +248,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public static void saveProfilePreferences(){
+    public void saveProfilePreferences(){
         SharedPreferences.Editor editor = profilePreferences.edit();
         if(fullName!=null){
             editor.putString("fullName",fullName);
@@ -246,10 +261,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public static void loadProfilePreferences(){
+    private void loadProfilePreferences(){
         String savedFullName,savedBiography,savedImagePath;
         savedFullName = profilePreferences.getString("fullName","User Full Name");
         savedBiography = profilePreferences.getString("biography","User Biography");
         savedImagePath = profilePreferences.getString("imagePath",null);
+
+        textViewUserFullName.setText(savedFullName);
+        textViewUserBiography.setText(savedBiography);
     }
 }

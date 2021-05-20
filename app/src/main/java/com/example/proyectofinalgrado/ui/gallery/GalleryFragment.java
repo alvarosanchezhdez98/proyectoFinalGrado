@@ -47,7 +47,6 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     private final String IMAGES_DIRECTORY="images/";
     private final String IMAGE_PATH=IMAGES_DIRECTORY+"loopBack";
-    String imagePath="";
 
 
     //Gallery ImageViews separated for each row.
@@ -112,15 +111,12 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     private void openCamera(){
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Check if device has a camera app.
-        if(intentCamera.resolveActivity(getActivity().getPackageManager())!=null){
-            startActivityForResult(intentCamera,20);
-        }
+        startActivityForResult(intentCamera,20);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == 20){
+        if(requestCode == 20){
             if(resultCode == Activity.RESULT_OK){
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 imageView1.setImageBitmap(bitmap);

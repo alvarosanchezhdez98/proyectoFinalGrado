@@ -24,12 +24,6 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_settings"
-        android:name="com.example.proyectofinalgrado.ui.settings.SettingsFragment"
-        android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
         android:id="@+id/nav_contact"
         android:name="com.example.proyectofinalgrado.ui.contact.ContactFragment"
         android:label="@string/menu_contact"
