@@ -145,7 +145,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 20){
             if(resultCode == Activity.RESULT_OK && data!=null){
-                Uri uri = data.getData();
+                imagePath = data.getData();
                 try{
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(),uri);
                     imageButtonUserProfilePic.setImageBitmap(bitmap);
@@ -257,6 +257,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         if(biography!=null){
             editor.putString("biography",biography);
+        }
+        if(editor.commit()){
+            editor.apply();
         }
     }
 
