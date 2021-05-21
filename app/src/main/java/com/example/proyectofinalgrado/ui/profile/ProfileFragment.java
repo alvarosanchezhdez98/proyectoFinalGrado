@@ -147,7 +147,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             if(resultCode == Activity.RESULT_OK && data!=null){
                 imagePath = data.getData();
                 try{
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(),uri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(),imagePath);
                     imageButtonUserProfilePic.setImageBitmap(bitmap);
                 }catch (IOException fnfe){
                     Toast.makeText(this.getContext(), "Couldn't load image", Toast.LENGTH_SHORT).show();
